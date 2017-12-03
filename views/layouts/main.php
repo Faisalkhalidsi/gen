@@ -2,12 +2,14 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+//use Yii;
 use app\widgets\Alert;
 use yii\helpers\Html;
 //use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 //use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+
 //use kartik\sidenav\SideNav;
 // OR if this package is installed separately, you can use
 // use kartik\sidenav\SideNav;
@@ -24,10 +26,10 @@ AppAsset::register($this);
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
-        <?php $this->head() ?>
+<?php $this->head() ?>
     </head>
     <body>
-        <?php $this->beginBody() ?>
+<?php $this->beginBody() ?>
 
         <div class="wrap">
             <div id="coba">
@@ -47,8 +49,7 @@ AppAsset::register($this);
                 ?>
             </div>
             <div class="row">
-                <?php
-                ?>
+<?php ?>
             </div>
             <div class="container" style="margin-left: 10px; margin-top: 10px; width: 1300px;">
                 <div class="row" id="menu">
@@ -93,9 +94,11 @@ AppAsset::register($this);
 //                    ]);
                     ?>
                 </div>
-
+                
                 <?= Alert::widget() ?>
-                <?= $content ?>
+                
+
+<?= $content ?>
             </div>
 
         </div>
@@ -108,7 +111,7 @@ AppAsset::register($this);
         </div>
     </footer>
 
-    <?php $this->endBody() ?>
+<?php $this->endBody() ?>
 </body>
 </html>
 <?php $this->endPage() ?>

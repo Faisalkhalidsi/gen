@@ -8,7 +8,6 @@
 
 use miloschuman\highcharts\Highcharts;
 
-
 echo Highcharts::widget([
     'id' => $id,
     'scripts' => [

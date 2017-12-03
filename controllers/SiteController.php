@@ -105,7 +105,7 @@ class SiteController extends Controller {
             $categories = array();
             $resultsDate = array();
 
-
+         
             foreach ($data as $values) {
                 if (!in_array($values['date'], $categories)) {
                     array_push($categories, $values['date']);
@@ -115,6 +115,10 @@ class SiteController extends Controller {
                 $resultsPartitionID[] = $values['partition_id'];
                 $resultsDate[] = $values['date'];
                 $resultsOrderTotal[] = $values['order_total'];
+            }
+            
+               if (sizeof($categories) == 0) {
+                return $this->renderAjax('_flash');
             }
 
             $series = array();
@@ -147,6 +151,8 @@ class SiteController extends Controller {
                     'data' => array((int) $values['order_total']));
             }
         }
+
+
         return $this->renderAjax('_chart', [
                     'series' => $series,
                     'id' => 'partitionChart',
@@ -235,15 +241,15 @@ class SiteController extends Controller {
             }
         }
 //        Yii::$app->session->setFlash('success', "Your message to display");
-        Yii::$app->getSession()->setFlash('success', [
-            'type' => 'success',
-            'duration' => 5000,
-            'icon' => 'fa fa-users',
-            'message' => 'My Message',
-            'title' => 'My Title',
-            'positonY' => 'top',
-            'positonX' => 'left'
-        ]);
+//        Yii::$app->getSession()->setFlash('success', [
+//            'type' => 'success',
+//            'duration' => 5000,
+//            'icon' => 'fa fa-users',
+//            'message' => 'My Message',
+//            'title' => 'My Title',
+//            'positonY' => 'top',
+//            'positonX' => 'left'
+//        ]);
 
         return $this->renderAjax('_chart', [
                     'series' => $series,

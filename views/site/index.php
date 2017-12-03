@@ -7,6 +7,9 @@ use kartik\date\DatePicker;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
+use yii\bootstrap\Modal;
+
+//use kartik\growl\Growl;
 
 $this->title = 'OSM';
 //$this->params['breadcrumbs'][] = $this->title;
@@ -168,13 +171,30 @@ $this->title = 'OSM';
 
         </div>
 
-
-
-
         <?php
         ActiveForm::end();
         ?>
+
+        <?php
+        Modal::begin([
+            'header' => '<h3> <strong>Alert  </strong></h3>',
+            'id' => 'myModal',
+            'size' => 'modal-sm',]);
+
+        echo "<div class='alert alert-warning' id='myModalContent'>Data Not Found</div>";
+
+        Modal::end();
+
+        Modal::begin([
+            'header' => '<h4>Siswa</h4>',
+            'id' => 'modal',
+            'size' => 'modal-lg',
+        ]);
+
+        echo "<div id='modalContent'><div>";
+        ?>
     </div>
+
 </div>
 
 <script>
@@ -187,7 +207,16 @@ $this->title = 'OSM';
                 partition_id: $('#partitiontable-partition_id').val()
             },
             success: function(data) {
-                $("#partitionTable").html(data);
+                if (data == 'out') {
+                    $("#myModal").modal('show')
+                            .find("#modalContent")
+                            .load($(this).attr('value'))
+//                    $("#dialog").dialog("open");
+//                    return false;
+                } else {
+                    $("#partitionTable").html(data);
+                }
+
             }
         });
     }
