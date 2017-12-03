@@ -210,9 +210,7 @@ $this->title = 'OSM';
                 if (data == 'out') {
                     $("#myModal").modal('show')
                             .find("#modalContent")
-                            .load($(this).attr('value'))
-//                    $("#dialog").dialog("open");
-//                    return false;
+                            .load($(this).attr('value'));
                 } else {
                     $("#partitionTable").html(data);
                 }
@@ -227,7 +225,13 @@ $this->title = 'OSM';
             type: 'post',
             data: {from: $('#topten').val(), to: $('#topten-2').val(), table_name: $('#toptable-table_name').val()},
             success: function(secondData) {
-                $('#toptenTable').html(secondData);
+                if (data == 'out') {
+                    $("#myModal").modal('show')
+                            .find("#modalContent")
+                            .load($(this).attr('value'));
+                } else {
+                    $('#toptenTable').html(secondData);
+                }
             }
         });
     }
