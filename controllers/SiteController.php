@@ -105,7 +105,7 @@ class SiteController extends Controller {
             $categories = array();
             $resultsDate = array();
 
-         
+
             foreach ($data as $values) {
                 if (!in_array($values['date'], $categories)) {
                     array_push($categories, $values['date']);
@@ -116,8 +116,8 @@ class SiteController extends Controller {
                 $resultsDate[] = $values['date'];
                 $resultsOrderTotal[] = $values['order_total'];
             }
-            
-               if (sizeof($categories) == 0) {
+
+            if (sizeof($categories) == 0) {
                 return $this->renderAjax('_flash');
             }
 
@@ -182,16 +182,11 @@ class SiteController extends Controller {
             $sql->groupBy('table_name');
         }
 
-
-
         try {
             $data = $sql->all();
         } catch (Exception $ex) {
             echo 'Query failed', $ex->getMessage();
         }
-
-
-
 
         if ($table_name != NULL) {
             $categories = array();
@@ -208,6 +203,10 @@ class SiteController extends Controller {
                 $resultsTableName[] = $values['table_name'];
                 $resultsDate[] = $values['date'];
                 $resultsRowTotal[] = $values['row_total'];
+            }
+
+            if (sizeof($categories) == 0) {
+                return $this->renderAjax('_flash');
             }
 
             $series = array();
