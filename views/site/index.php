@@ -225,7 +225,7 @@ $this->title = 'OSM';
             type: 'post',
             data: {from: $('#topten').val(), to: $('#topten-2').val(), table_name: $('#toptable-table_name').val()},
             success: function(secondData) {
-                if (data == 'out') {
+                if (secondData == 'out') {
                     $("#myModal").modal('show')
                             .find("#modalContent")
                             .load($(this).attr('value'));
