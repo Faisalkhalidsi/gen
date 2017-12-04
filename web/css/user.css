@@ -22,3 +22,14 @@ and open the template in the editor.
 .spacer {
     width: 20px;
 }
+
+.myNavbar{
+    background-color:#24292E;
+}
+
+.myMenu{
+    a:active,focus {
+        background-color: yellow;
+    }
+}
+}

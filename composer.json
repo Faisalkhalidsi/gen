@@ -22,9 +22,7 @@
         "p2made/yii2-sb-admin-theme": "^2.5",
         "kartik-v/yii2-date-range": "dev-master",
         "kartik-v/yii2-widget-datepicker": "@dev",
-        "kartik-v/yii2-field-range": "*",
-        "kartik-v/yii2-widget-growl": "*",
-        "derekisbusy/yii2-flash-growl": "1.*"
+        "kartik-v/yii2-field-range": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
