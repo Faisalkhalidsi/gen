@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'queued',
             'status',
             // 'date',
-             'time',
+            'time',
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);
