@@ -9,10 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
 
-//use kartik\growl\Growl;
-
 $this->title = 'OSM';
-//$this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="site-index">
@@ -198,6 +195,7 @@ $this->title = 'OSM';
                     <div class="col-sm-1" style="padding-top: 25px;">
                         <?php
                         echo Html::button('Show', [
+                            'id' => 'lastanalyzedBtn',
                             'class' => 'btn btn-primary',
                             'onclick' => 'lastanalyzedProcess();'
                         ]);
@@ -264,13 +262,14 @@ $this->title = 'OSM';
 </div>
 
 <script>
-    function partitionProcess() {
+    function process(url, from, to, id, position) {
         $.ajax({
-            url: '<?php echo Yii::$app->request->baseUrl . '/site/partition' ?>',
+            url: url,
             type: 'post',
-            data: {from: $('#Partition').val(),
-                to: $('#Partition-2').val(),
-                partition_id: $('#partitiontable-partition_id').val()
+            data: {
+                from: from,
+                to: to,
+                id: id
             },
             success: function(data) {
                 if (data == 'out') {
@@ -278,47 +277,35 @@ $this->title = 'OSM';
                             .find("#modalContent")
                             .load($(this).attr('value'));
                 } else {
-                    $("#partitionTable").html(data);
+                    position.html(data);
                 }
-
             }
         });
+    }
+    function partitionProcess() {
+        var url = '<?php echo Yii::$app->request->baseUrl . '/site/partition' ?>';
+        var from = $('#Partition').val();
+        var to = $('#Partition-2').val();
+        var id = $('#partitiontable-partition_id').val();
+        var position = $("#partitionTable");
+        process(url, from, to, id, position);
     }
 
     function toptenProcess() {
-        $.ajax({
-            url: '<?php echo Yii::$app->request->baseUrl . '/site/topten' ?>',
-            type: 'post',
-            data: {from: $('#topten').val(), to: $('#topten-2').val(), table_name: $('#toptable-table_name').val()},
-            success: function(secondData) {
-                if (secondData == 'out') {
-                    $("#myModal").modal('show')
-                            .find("#modalContent")
-                            .load($(this).attr('value'));
-                } else {
-                    $('#toptenTable').append(secondData);
-                }
-            }
-        });
+        var url = '<?php echo Yii::$app->request->baseUrl . '/site/topten' ?>';
+        var from = $('#topten').val();
+        var to = $('#topten-2').val();
+        var id = $('#toptable-table_name').val();
+        var position = $('#toptenTable');
+        process(url, from, to, id, position);
     }
 
     function lastanalyzedProcess() {
-        $.ajax({
-            url: '<?php echo Yii::$app->request->baseUrl . '/site/lastanalyzed' ?>',
-            type: 'post',
-            data: {from: $('#Lastanalyzed').val(), to: $('#Lastanalyzed-2').val(), table_name: $('#lastanalyzedtable-table_name').val()},
-            success: function(data) {
-                if (data == 'out') {
-                    $("#myModal").modal('show')
-                            .find("#modalContent")
-                            .load($(this).attr('value'));
-                } else {
-
-                    $('#lastanalyzedTable').append(data);
-                    var scrollPos = $("#lastanalyzedTable").offset().top;
-                    $(window).scrollTop(scrollPos);
-                }
-            }
-        });
+        var url = '<?php echo Yii::$app->request->baseUrl . '/site/lastanalyzed' ?>';
+        var from = $('#Lastanalyzed').val();
+        var to = $('#Lastanalyzed-2').val();
+        var id = $('#lastanalyzedtable-table_name').val();
+        var position = $('#lastanalyzedTable');
+        process(url, from, to, id, position);
     }
 </script>
