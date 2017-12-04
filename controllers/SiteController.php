@@ -73,10 +73,10 @@ class SiteController extends Controller {
                 ->groupBy('table_name')
                 ->all();
 
-        $thirdData = LastAnalyzedTable::find()
-                ->select('MAX(last_analyzed_table_id), table_name, row_total,date')
-                ->groupBy('table_name')
-                ->all();
+//        $thirdData = LastAnalyzedTable::find()
+//                ->select('MAX(last_analyzed_table_id), table_name, row_total,date')
+//                ->groupBy('table_name')
+//                ->all();
 
 //        SELECT * FROM `asm_osm` WHERE `name`='DATA' ORDER BY `asm_osm_id` DESC LIMIT 1 
         $asmDATA = AsmOsm::find()
@@ -107,7 +107,7 @@ class SiteController extends Controller {
         return $this->render('index', [
                     'diagram' => $data,
                     'secondDiagram' => $secondData,
-                    'thirdData' => $thirdData,
+//                    'thirdData' => $thirdData,
                     'modelPartition' => $modelPartition,
                     'asmDATA' => $asmDATA,
                     'asmOCR' => $asmOCR,
