@@ -167,8 +167,82 @@ $this->title = 'OSM';
             </div>
         </div>
         <hr>
-        <div class="row">
 
+
+        <!--second-->
+        <div class="row">
+            <div class="col-lg-6 tobeRounded">
+                <div class="row">
+                    <div class="col-sm-9" style="padding-left: 50px">
+                        <?php
+                        //dropdown list
+                        $modelLastanalyzed = new \app\models\LastAnalyzedTable();
+                        echo $form->field($modelLastanalyzed, 'table_name')
+                                ->dropDownList(ArrayHelper::map(\app\models\LastAnalyzedTable::find()->all(), 'table_name', 'table_name'), ['prompt' => 'All']);
+
+                        echo DatePicker::widget([
+                            'name' => 'from_date',
+                            'id' => 'Lastanalyzed',
+                            'value' => date("Y-m-d", strtotime("-1 days")),
+                            'type' => DatePicker::TYPE_RANGE,
+                            'name2' => 'to_date',
+                            'value2' => date("Y-m-d"),
+                            'pluginOptions' => [
+                                'autoclose' => true,
+                                'format' => 'yyyy-m-d'
+                            ]
+                        ]);
+                        ?>
+                    </div>
+
+                    <div class="col-sm-1" style="padding-top: 25px;">
+                        <?php
+                        echo Html::button('Show', [
+                            'class' => 'btn btn-primary',
+                            'onclick' => 'lastanalyzedProcess();'
+                        ]);
+                        ?>
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <?php ?>
+                <div id="lastanalyzedTable">
+                    <?php
+                    foreach ($thirdData as $values) {
+                        $c[] = "Partition ID";
+                        $b[] = array('type' => 'column',
+                            'name' => "Table Name : " . $values['table_name'],
+                            'data' => array((int) $values['row_total']));
+                    }
+                    echo Highcharts::widget([
+                        'id' => 'lastanalyzedChart',
+                        'options' => [
+                            'chart' => [
+                                'type' => 'column',
+                                'height' => '200',
+                                'width' => '500'
+                            ],
+                            'title' => ['text' => ''],
+                            'xAxis' => [
+                                'categories' => $c
+                            ],
+                            'yAxis' => [
+                                'title' => ['text' => 'Row Total']
+                            ],
+                            'series' => $b,
+                            'legend' => 'disable',
+                            'credits' => 'false'
+                        ]
+                    ]);
+                    ?>
+                </div>
+            </div>
+            <div id="spacer"></div>
+            <div class="col-lg-6 tobeRounded">
+
+
+            </div>
         </div>
 
         <?php
@@ -181,17 +255,9 @@ $this->title = 'OSM';
             'id' => 'myModal',
             'size' => 'modal-sm',]);
 
-        echo "<div class='alert alert-warning' id='myModalContent'>Data Not Found</div>";
+        echo "<div class='alert alert-warning' id='myModalContent'><i class='fa fa-car'></i>Data Not Found</div>";
 
         Modal::end();
-
-        Modal::begin([
-            'header' => '<h4>Siswa</h4>',
-            'id' => 'modal',
-            'size' => 'modal-lg',
-        ]);
-
-        echo "<div id='modalContent'><div>";
         ?>
     </div>
 
@@ -230,7 +296,27 @@ $this->title = 'OSM';
                             .find("#modalContent")
                             .load($(this).attr('value'));
                 } else {
-                    $('#toptenTable').html(secondData);
+                    $('#toptenTable').append(secondData);
+                }
+            }
+        });
+    }
+
+    function lastanalyzedProcess() {
+        $.ajax({
+            url: '<?php echo Yii::$app->request->baseUrl . '/site/lastanalyzed' ?>',
+            type: 'post',
+            data: {from: $('#Lastanalyzed').val(), to: $('#Lastanalyzed-2').val(), table_name: $('#lastanalyzedtable-table_name').val()},
+            success: function(data) {
+                if (data == 'out') {
+                    $("#myModal").modal('show')
+                            .find("#modalContent")
+                            .load($(this).attr('value'));
+                } else {
+
+                    $('#lastanalyzedTable').append(data);
+                    var scrollPos = $("#lastanalyzedTable").offset().top;
+                    $(window).scrollTop(scrollPos);
                 }
             }
         });
