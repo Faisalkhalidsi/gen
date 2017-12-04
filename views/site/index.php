@@ -428,12 +428,12 @@ $this->title = 'OSM';
         process(url, from, to, id, position);
     }
 
-    function lastanalyzedProcess() {
-        var url = '<?php echo Yii::$app->request->baseUrl . '/site/lastanalyzed' ?>';
-        var from = $('#Lastanalyzed').val();
-        var to = $('#Lastanalyzed-2').val();
-        var id = $('#lastanalyzedtable-table_name').val();
-        var position = $('#lastanalyzedTable');
-        process(url, from, to, id, position);
-    }
+//    function lastanalyzedProcess() {
+//        var url = '<?php echo Yii::$app->request->baseUrl . '/site/lastanalyzed' ?>';
+//        var from = $('#Lastanalyzed').val();
+//        var to = $('#Lastanalyzed-2').val();
+//        var id = $('#lastanalyzedtable-table_name').val();
+//        var position = $('#lastanalyzedTable');
+//        process(url, from, to, id, position);
+//    }
 </script>
