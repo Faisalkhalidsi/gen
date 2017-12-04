@@ -8,16 +8,16 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\widgets\ActiveForm;
 use yii\bootstrap\Modal;
+use yii\web\JsExpression;
 
 $this->title = 'OSM';
 ?>
 
 <div class="site-index">
     <div class="body-content">
-
-
-        <h3>OSM Monitoring</h3>
-
+        <blockquote class="blockquote">
+            <p class="mb-1"><h3>OSM Monitoring</h3></p>
+        </blockquote>
         <hr>
         <?php
         $form = ActiveForm::begin([
@@ -26,6 +26,205 @@ $this->title = 'OSM';
                     'id' => 'osmForm'
         ]);
         ?>
+        <div class="row">
+            <div class="col-lg-3">
+                <?php
+                $name = $asmDATA['name'];
+                $free = $asmDATA['free'];
+                $total = $asmDATA['total'];
+                $used = $total - $free;
+                $categories = array($free, $used);
+
+                echo Highcharts::widget([
+                    'scripts' => [
+                        'modules/exporting',
+                        'highcharts-3d',
+                    ],
+                    'id' => 'asmChart1',
+                    'options' => [
+                        'title' => [
+                            'text' => 'DATA',
+                        ],
+                        'xAxis' => [
+                            'categories' => $categories,
+                        ],
+                        'series' => [
+                            [
+                                'type' => 'pie',
+                                'name' => 'Total',
+                                'data' => [
+                                    [
+                                        'name' => "Free (" . number_format(((float) $free / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $free,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[0]'), // Jane's color
+                                    ],
+                                    [
+                                        'name' => "Used (" . number_format(((float) $used / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $used,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[1]'), // John's color
+                                    ],
+                                ],
+                                'size' => 150,
+                                'showInLegend' => TRUE,
+                                'dataLabels' => [
+                                    'enabled' => FALSE,
+                                ],
+                            ],
+                        ],
+                        'credits' => 'false'
+                    ]
+                ]);
+                ?>
+
+            </div>
+            <div class="col-lg-3">
+                <?php
+                $name = $asmOCR['name'];
+                $free = $asmOCR['free'];
+                $total = $asmOCR['total'];
+                $used = $total - $free;
+                $categories = array($free, $used);
+
+                echo Highcharts::widget([
+                    'scripts' => [
+                        'modules/exporting',
+                    ],
+                    'id' => 'asmChart2',
+                    'options' => [
+                        'title' => [
+                            'text' => 'OCR',
+                        ],
+                        'xAxis' => [
+                            'categories' => $categories,
+                        ],
+                        'series' => [
+                            [
+                                'type' => 'pie',
+                                'name' => 'Total',
+                                'data' => [
+                                    [
+                                        'name' => "Free (" . number_format(((float) $free / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $free,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[0]'), // Jane's color
+                                    ],
+                                    [
+                                        'name' => "Used (" . number_format(((float) $used / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $used,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[1]'), // John's color
+                                    ],
+                                ],
+                                'size' => 150,
+                                'showInLegend' => TRUE,
+                                'dataLabels' => [
+                                    'enabled' => false,
+                                ],
+                            ],
+                        ],
+                        'credits' => 'false'
+                    ]
+                ]);
+                ?>
+
+            </div>
+            <div class="col-lg-3">
+                <?php
+                $name = $asmRECO['name'];
+                $free = $asmRECO['free'];
+                $total = $asmRECO['total'];
+                $used = $total - $free;
+                $categories = array($free, $used);
+
+                echo Highcharts::widget([
+                    'scripts' => [
+                        'modules/exporting',
+                    ],
+                    'id' => 'asmChart3',
+                    'options' => [
+                        'title' => [
+                            'text' => 'RECO',
+                        ],
+                        'xAxis' => [
+                            'categories' => $categories,
+                        ],
+                        'series' => [
+                            [
+                                'type' => 'pie',
+                                'name' => 'Total',
+                                'data' => [
+                                    [
+                                        'name' => "Free (" . number_format(((float) $free / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $free,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[0]'), // Jane's color
+                                    ],
+                                    [
+                                        'name' => "Used (" . number_format(((float) $used / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $used,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[1]'), // John's color
+                                    ],
+                                ],
+                                'size' => 150,
+                                'showInLegend' => true,
+                                'dataLabels' => [
+                                    'enabled' => false,
+                                ],
+                            ],
+                        ],
+                        'credits' => 'false'
+                    ]
+                ]);
+                ?>
+
+
+            </div>
+            <div class="col-lg-3">
+                <?php
+                $name = $asmREDO['name'];
+                $free = $asmREDO['free'];
+                $total = $asmREDO['total'];
+                $used = $total - $free;
+                $categories = array($free, $used);
+                echo Highcharts::widget([
+                    'scripts' => [
+                        'modules/exporting',
+                    ],
+                    'id' => 'asmChart4',
+                    'options' => [
+                        'title' => [
+                            'text' => 'REDO',
+                        ],
+                        'xAxis' => [
+                            'categories' => $categories,
+                        ],
+                        'series' => [
+                            [
+                                'type' => 'pie',
+                                'name' => 'Total',
+                                'data' => [
+                                    [
+                                        'name' => "Free (" . number_format(((float) $free / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $free,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[0]'), // Jane's color
+                                    ],
+                                    [
+                                        'name' => "Used (" . number_format(((float) $used / $total * 100), 2, '.', '') . "%)",
+                                        'y' => $used,
+                                        'color' => new JsExpression('Highcharts.getOptions().colors[1]'), // John's color
+                                    ],
+                                ],
+                                'size' => 150,
+                                'showInLegend' => true,
+                                'dataLabels' => [
+                                    'enabled' => false,
+                                ],
+                            ],
+                        ],
+                        'credits' => 'false'
+                    ]
+                ]);
+                ?>
+            </div>
+        </div>
+        <hr>
         <div class="row">
             <div class="col-lg-6 tobeRounded">
                 <div class="row">
@@ -144,7 +343,7 @@ $this->title = 'OSM';
                             'chart' => [
                                 'type' => 'colomn',
                                 'height' => '200',
-                                'width' => '500'
+                                'width' => '500',
                             ],
                             'title' => ['text' => ''],
                             'xAxis' => [
@@ -167,78 +366,8 @@ $this->title = 'OSM';
 
         <!--second-->
         <div class="row">
-            <div class="col-lg-6 tobeRounded">
-                <div class="row">
-                    <div class="col-sm-9" style="padding-left: 50px">
-                        <?php
-                        //dropdown list
-                        $modelLastanalyzed = new \app\models\LastAnalyzedTable();
-                        echo $form->field($modelLastanalyzed, 'table_name')
-                                ->dropDownList(ArrayHelper::map(\app\models\LastAnalyzedTable::find()->all(), 'table_name', 'table_name'), ['prompt' => 'All']);
-
-                        echo DatePicker::widget([
-                            'name' => 'from_date',
-                            'id' => 'Lastanalyzed',
-                            'value' => date("Y-m-d", strtotime("-1 days")),
-                            'type' => DatePicker::TYPE_RANGE,
-                            'name2' => 'to_date',
-                            'value2' => date("Y-m-d"),
-                            'pluginOptions' => [
-                                'autoclose' => true,
-                                'format' => 'yyyy-m-d'
-                            ]
-                        ]);
-                        ?>
-                    </div>
-
-                    <div class="col-sm-1" style="padding-top: 25px;">
-                        <?php
-                        echo Html::button('Show', [
-                            'id' => 'lastanalyzedBtn',
-                            'class' => 'btn btn-primary',
-                            'onclick' => 'lastanalyzedProcess();'
-                        ]);
-                        ?>
-                    </div>
-                </div>
-                <hr>
-                <br>
-                <?php ?>
-                <div id="lastanalyzedTable">
-                    <?php
-                    foreach ($thirdData as $values) {
-                        $c[] = "Partition ID";
-                        $b[] = array('type' => 'column',
-                            'name' => "Table Name : " . $values['table_name'],
-                            'data' => array((int) $values['row_total']));
-                    }
-                    echo Highcharts::widget([
-                        'id' => 'lastanalyzedChart',
-                        'options' => [
-                            'chart' => [
-                                'type' => 'column',
-                                'height' => '200',
-                                'width' => '500'
-                            ],
-                            'title' => ['text' => ''],
-                            'xAxis' => [
-                                'categories' => $c
-                            ],
-                            'yAxis' => [
-                                'title' => ['text' => 'Row Total']
-                            ],
-                            'series' => $b,
-                            'legend' => 'disable',
-                            'credits' => 'false'
-                        ]
-                    ]);
-                    ?>
-                </div>
-            </div>
             <div id="spacer"></div>
             <div class="col-lg-6 tobeRounded">
-
-
             </div>
         </div>
 
