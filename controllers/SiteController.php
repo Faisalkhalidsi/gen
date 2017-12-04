@@ -91,7 +91,7 @@ class SiteController extends Controller {
         $request = Yii::$app->request;
         $from = $request->post('from');
         $to = $request->post('to');
-        $partition_id = $request->post('partition_id');
+        $partition_id = $request->post('id');
 
 
         $sql = PartitionTable::find()
@@ -147,7 +147,7 @@ class SiteController extends Controller {
         $request = Yii::$app->request;
         $from = $request->post('from');
         $to = $request->post('to');
-        $table_name = $request->post('table_name');
+        $table_name = $request->post('id');
 
         $sql = TopTable::find()
                 ->select('MAX(top_table_id), table_name, row_total,date');
@@ -200,7 +200,7 @@ class SiteController extends Controller {
         $request = Yii::$app->request;
         $from = $request->post('from');
         $to = $request->post('to');
-        $table_name = $request->post('table_name');
+        $table_name = $request->post('id');
 
         $sql = LastAnalyzedTable::find()
                 ->select('MAX(last_analyzed_table_id), table_name, row_total,date');
