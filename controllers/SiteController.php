@@ -85,8 +85,15 @@ class SiteController extends Controller {
         $to = $request->post('to');
         $partition_id = $request->post('partition_id');
 
+
         $sql = PartitionTable::find()
                 ->select('MAX(partition_table_id) as table_id,partition_id, order_total, date');
+
+        $param = array(
+            'param1' => 'partition_id',
+            'param2' => 'date',
+            'param3' => 'order_total');
+
 
         if ($partition_id != NULL) {
             $sql->where('date >=:from');
@@ -99,48 +106,16 @@ class SiteController extends Controller {
         } else {
             $sql->groupBy('partition_id');
         }
+
         $data = $sql->all();
 
         if ($partition_id != NULL) {
-            $categories = array();
-            $resultsDate = array();
+            $arr = $this->arrangeBar($partition_id, $data, $param);
+            $series = $arr['series'];
+            $categoriesReal = $arr['categories'];
 
-
-            foreach ($data as $values) {
-                if (!in_array($values['date'], $categories)) {
-                    array_push($categories, $values['date']);
-                    $categoriesReal[] = ($values['date']);
-                }
-
-                $resultsPartitionID[] = $values['partition_id'];
-                $resultsDate[] = $values['date'];
-                $resultsOrderTotal[] = $values['order_total'];
-            }
-
-            if (sizeof($categories) == 0) {
+            if ($series == 0) {
                 return $this->renderAjax('_flash');
-            }
-
-            $series = array();
-            $myObj = new Data();
-
-            for ($i = 0; $i < sizeof($categoriesReal); $i++) {
-                $myObj->name = $resultsPartitionID[$i];
-                for ($j = 0; $j < sizeof($resultsDate); $j++) {
-                    if ($categoriesReal[$i] == $resultsDate[$j]) {
-                        $simpan[] = (int) $resultsOrderTotal[$j];
-                    }
-                }
-                $myObj->data = $simpan;
-                if (sizeof($categoriesReal) == 1) {
-                    array_push($series, (array) $myObj);
-                } elseif ($i == (sizeof($categoriesReal) - 1)) {
-                    array_push($series, (array) $myObj);
-                }
-            }
-
-            if ($partition_id == NULL) {
-                $categoriesReal = '';
             }
         } else {
             foreach ($data as $values) {
@@ -151,7 +126,6 @@ class SiteController extends Controller {
                     'data' => array((int) $values['order_total']));
             }
         }
-
 
         return $this->renderAjax('_chart', [
                     'series' => $series,
@@ -169,10 +143,14 @@ class SiteController extends Controller {
         $sql = TopTable::find()
                 ->select('MAX(top_table_id), table_name, row_total,date');
 
+        $param = array(
+            'param1' => 'table_name',
+            'param2' => 'date',
+            'param3' => 'row_total');
+
         if ($table_name != NULL) {
             $sql->where('date >=:from');
             $sql->andWhere('date <=:to');
-
             $sql->groupBy('table_name,date');
             $sql->andWhere('table_name =:table_name');
             $sql->addParams([':table_name' => $table_name]);
@@ -182,41 +160,60 @@ class SiteController extends Controller {
             $sql->groupBy('table_name');
         }
 
-        try {
-            $data = $sql->all();
-        } catch (Exception $ex) {
-            echo 'Query failed', $ex->getMessage();
-        }
+        $data = $sql->all();
 
         if ($table_name != NULL) {
-            $categories = array();
-            $resultsDate = array();
-            $resultsRowTotal = array();
+            $arr = $this->arrangeBar($table_name, $data, $param);
+            $series = $arr['series'];
+            $categoriesReal = $arr['categories'];
 
-
-            foreach ($data as $values) {
-                if (!in_array($values['date'], $categories)) {
-                    array_push($categories, $values['date']);
-                    $categoriesReal[] = ($values['date']);
-                }
-
-                $resultsTableName[] = $values['table_name'];
-                $resultsDate[] = $values['date'];
-                $resultsRowTotal[] = $values['row_total'];
-            }
-
-            if (sizeof($categories) == 0) {
+            if ($series == 0) {
                 return $this->renderAjax('_flash');
             }
+        } else {
+            foreach ($data as $values) {
+                $categoriesReal[] = "Table Name";
+                $series[] = array(
+                    'type' => 'column',
+                    'name' => "Table Name : " . $values['table_name'],
+                    'data' => array((int) $values['row_total']));
+            }
+        }
+        return $this->renderAjax('_chart', [
+                    'series' => $series,
+                    'id' => 'toptenChart',
+                    'categories' => $categoriesReal
+        ]);
+    }
 
+    public function arrangeBar($primary, $data, $param) {
+        $categories = array();
+        $resultsDate = array();
+        $resultsTotal = array();
+
+        foreach ($data as $values) {
+            if (!in_array($values[$param['param2']], $categories)) {
+                array_push($categories, $values[$param['param2']]);
+                $categoriesReal[] = ($values[$param['param2']]);
+            }
+
+            $resultsPrimary[] = $values[$param['param1']];
+            $resultsDate[] = $values[$param['param2']];
+            $resultsTotal[] = $values[$param['param3']];
+        }
+
+        if (sizeof($categories) == 0) {
+            $series = 0;
+            $categoriesReal = 0;
+        } else {
             $series = array();
             $myObj = new Data();
 
             for ($i = 0; $i < sizeof($categoriesReal); $i++) {
-                $myObj->name = $resultsTableName[$i];
+                $myObj->name = $resultsPrimary[$i];
                 for ($j = 0; $j < sizeof($resultsDate); $j++) {
                     if ($categoriesReal[$i] == $resultsDate[$j]) {
-                        $simpan[] = (int) $resultsRowTotal[$j];
+                        $simpan[] = (int) $resultsTotal[$j];
                     }
                 }
                 $myObj->data = $simpan;
@@ -227,34 +224,16 @@ class SiteController extends Controller {
                 }
             }
 
-            if ($table_name == NULL) {
+            if ($primary == NULL) {
                 $categoriesReal = '';
             }
-        } else {
-            foreach ($data as $values) {
-                $categoriesReal[] = "Table Name";
-                $series[] = array(
-                    'type' => 'column',
-                    'name' => "Partition Id : " . $values['table_name'],
-                    'data' => array((int) $values['row_total']));
-            }
         }
-//        Yii::$app->session->setFlash('success', "Your message to display");
-//        Yii::$app->getSession()->setFlash('success', [
-//            'type' => 'success',
-//            'duration' => 5000,
-//            'icon' => 'fa fa-users',
-//            'message' => 'My Message',
-//            'title' => 'My Title',
-//            'positonY' => 'top',
-//            'positonX' => 'left'
-//        ]);
 
-        return $this->renderAjax('_chart', [
-                    'series' => $series,
-                    'id' => 'toptenChart',
-                    'categories' => $categoriesReal
-        ]);
+        $result = array(
+            'series' => $series,
+            'categories' => $categoriesReal);
+
+        return $result;
     }
 
     /**
