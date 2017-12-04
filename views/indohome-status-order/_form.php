@@ -4,17 +4,21 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\PartitionTable */
+/* @var $model app\models\IndihomeStatusOrder */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="partition-table-form">
+<div class="indihome-status-order-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'partition_id')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'flow')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'order_total')->textInput() ?>
+    <?= $form->field($model, 'task')->textInput(['maxlength' => true]) ?>
+
+    <?= $form->field($model, 'queued')->textInput() ?>
+
+    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'date')->textInput() ?>
 

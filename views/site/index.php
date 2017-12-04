@@ -16,8 +16,9 @@ $this->title = 'OSM';
 <div class="site-index">
     <div class="body-content">
         <blockquote class="blockquote">
-            <p class="mb-1"><h3>OSM Monitoring</h3></p>
+            <p class="mb-1"><strong><h4>OSM Monitoring</h4></strong></p>
         </blockquote>
+        <i>*Update Every Hour</i>
         <hr>
         <?php
         $form = ActiveForm::begin([

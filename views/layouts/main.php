@@ -49,7 +49,7 @@ AppAsset::register($this);
                     'options' => ['class' => 'navbar-nav navbar-right myMenu'],
                     'items' => [
                         ['label' => 'OSM', 'url' => ['/site/index']],
-//                        ['label' => 'About', 'url' => ['/site/about']],
+                        ['label' => 'Indihome Order Status', 'url' => ['/indohome-status-order/index']],
 //                        ['label' => 'Contact', 'url' => ['/site/contact']],
 //                        Yii::$app->user->isGuest ? (
 //                                ['label' => 'Login', 'url' => ['/site/login']]
