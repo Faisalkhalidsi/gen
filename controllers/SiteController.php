@@ -12,6 +12,7 @@ use app\models\ContactForm;
 use app\models\PartitionTable;
 use app\models\TopTable;
 use app\models\Data;
+use app\models\LastAnalyzedTable;
 
 class SiteController extends Controller {
 
@@ -71,10 +72,17 @@ class SiteController extends Controller {
                 ->groupBy('table_name')
                 ->all();
 
+        $thirdData = LastAnalyzedTable::find()
+                ->select('MAX(last_analyzed_table_id), table_name, row_total,date')
+                ->groupBy('table_name')
+                ->all();
+
+
         $modelPartition = new PartitionTable();
         return $this->render('index', [
                     'diagram' => $data,
                     'secondDiagram' => $secondData,
+                    'thirdData' => $thirdData,
                     'modelPartition' => $modelPartition,
         ]);
     }
@@ -130,7 +138,8 @@ class SiteController extends Controller {
         return $this->renderAjax('_chart', [
                     'series' => $series,
                     'id' => 'partitionChart',
-                    'categories' => $categoriesReal
+                    'categories' => $categoriesReal,
+                    'yAxis' => 'Order Total'
         ]);
     }
 
@@ -182,7 +191,61 @@ class SiteController extends Controller {
         return $this->renderAjax('_chart', [
                     'series' => $series,
                     'id' => 'toptenChart',
-                    'categories' => $categoriesReal
+                    'categories' => $categoriesReal,
+                    'yAxis' => 'Row Total'
+        ]);
+    }
+
+    public function actionLastanalyzed() {
+        $request = Yii::$app->request;
+        $from = $request->post('from');
+        $to = $request->post('to');
+        $table_name = $request->post('table_name');
+
+        $sql = LastAnalyzedTable::find()
+                ->select('MAX(last_analyzed_table_id), table_name, row_total,date');
+
+        $param = array(
+            'param1' => 'table_name',
+            'param2' => 'date',
+            'param3' => 'row_total');
+
+        if ($table_name != NULL) {
+            $sql->where('date >=:from');
+            $sql->andWhere('date <=:to');
+            $sql->groupBy('table_name,date');
+            $sql->andWhere('table_name =:table_name');
+            $sql->addParams([':table_name' => $table_name]);
+            $sql->addParams([':from' => $from]);
+            $sql->addParams([':to' => $to]);
+        } else {
+            $sql->groupBy('table_name');
+        }
+
+        $data = $sql->all();
+
+        if ($table_name != NULL) {
+            $arr = $this->arrangeBar($table_name, $data, $param);
+            $series = $arr['series'];
+            $categoriesReal = $arr['categories'];
+
+            if ($series == 0) {
+                return $this->renderAjax('_flash');
+            }
+        } else {
+            foreach ($data as $values) {
+                $categoriesReal[] = "Table Name";
+                $series[] = array(
+                    'type' => 'column',
+                    'name' => "Table Name : " . $values['table_name'],
+                    'data' => array((int) $values['row_total']));
+            }
+        }
+        return $this->renderAjax('_chart', [
+                    'series' => $series,
+                    'id' => 'lastanalyzedChart',
+                    'categories' => $categoriesReal,
+                    'yAxis' => 'Row Total'
         ]);
     }
 
