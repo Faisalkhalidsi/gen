@@ -13,6 +13,7 @@ use app\models\PartitionTable;
 use app\models\TopTable;
 use app\models\Data;
 use app\models\LastAnalyzedTable;
+use app\models\AsmOsm;
 
 class SiteController extends Controller {
 
@@ -77,6 +78,30 @@ class SiteController extends Controller {
                 ->groupBy('table_name')
                 ->all();
 
+//        SELECT * FROM `asm_osm` WHERE `name`='DATA' ORDER BY `asm_osm_id` DESC LIMIT 1 
+        $asmDATA = AsmOsm::find()
+                ->select('*')
+                ->where("name ='DATA' ")
+                ->orderBy('asm_osm_id DESC')
+                ->one();
+
+        $asmOCR = AsmOsm::find()
+                ->select('*')
+                ->where("name ='OCR' ")
+                ->orderBy('asm_osm_id DESC')
+                ->one();
+
+        $asmRECO = AsmOsm::find()
+                ->select('*')
+                ->where("name ='RECO' ")
+                ->orderBy('asm_osm_id DESC')
+                ->one();
+
+        $asmREDO = AsmOsm::find()
+                ->select('*')
+                ->where("name ='REDO' ")
+                ->orderBy('asm_osm_id DESC')
+                ->one();
 
         $modelPartition = new PartitionTable();
         return $this->render('index', [
@@ -84,6 +109,10 @@ class SiteController extends Controller {
                     'secondDiagram' => $secondData,
                     'thirdData' => $thirdData,
                     'modelPartition' => $modelPartition,
+                    'asmDATA' => $asmDATA,
+                    'asmOCR' => $asmOCR,
+                    'asmRECO' => $asmRECO,
+                    'asmREDO' => $asmREDO
         ]);
     }
 
