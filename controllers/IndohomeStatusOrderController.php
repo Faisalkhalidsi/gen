@@ -33,20 +33,19 @@ class IndohomeStatusOrderController extends Controller {
      * @return mixed
      */
     public function actionIndex() {
-        $data = IndihomeStatusOrder::find()
-                ->select('*')
-                ->orderBy('indihome_status_order_id DESC')
-                ->groupBy('task,date');
-        
+        $query = IndihomeStatusOrder::find();
+        $query->where(['=', 'time', IndihomeStatusOrder::find()
+                ->select('time')
+                ->orderBy('time DESC')
+                ->limit(1)]);
+
         $dataProvider = new ActiveDataProvider([
-            'query' => $data,
+            'query' => $query,
         ]);
 
         return $this->render('index', [
                     'dataProvider' => $dataProvider,
         ]);
     }
-
-    
 
 }
