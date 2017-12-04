@@ -38,7 +38,7 @@ class TopTable extends \yii\db\ActiveRecord {
     public function attributeLabels() {
         return [
             'top_table_id' => 'Top Table ID',
-            'table_name' => 'Table Name',
+            'table_name' => 'Top Table Table Name',
             'row_total' => 'Row Total',
             'date' => 'Date',
         ];

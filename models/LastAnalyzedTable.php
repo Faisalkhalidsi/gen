@@ -42,7 +42,7 @@ class LastAnalyzedTable extends \yii\db\ActiveRecord
     {
         return [
             'last_analyzed_table_id' => 'Last Analyzed Table ID',
-            'table_name' => 'Table Name',
+            'table_name' => 'Last Analyzed Table Name',
             'row_total' => 'Row Total',
             'date' => 'Date',
             'time' => 'Time',

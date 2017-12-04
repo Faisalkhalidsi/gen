@@ -93,7 +93,6 @@ class SiteController extends Controller {
         $to = $request->post('to');
         $partition_id = $request->post('id');
 
-
         $sql = PartitionTable::find()
                 ->select('MAX(partition_table_id) as table_id,partition_id, order_total, date');
 

@@ -165,7 +165,6 @@ $this->title = 'OSM';
         </div>
         <hr>
 
-
         <!--second-->
         <div class="row">
             <div class="col-lg-6 tobeRounded">

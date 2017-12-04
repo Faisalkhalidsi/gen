@@ -12,7 +12,6 @@ echo Highcharts::widget([
     'id' => $id,
     'scripts' => [
         'modules/exporting',
-//        'themes/grid-light',
     ],
     'options' => [
         'chart' => [
@@ -25,7 +24,7 @@ echo Highcharts::widget([
             'categories' => $categories
         ],
         'yAxis' => [
-            'title' => ['text' => 'Order Total']
+            'title' => ['text' => $yAxis]
         ],
         'series' => $series,
         'legend' => 'disable',

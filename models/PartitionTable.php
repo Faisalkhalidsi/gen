@@ -27,7 +27,7 @@ class PartitionTable extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['partition_id','order_total', 'date', 'time'], 'required'],
+            [['order_total', 'date', 'time'], 'required'],
             [['order_total'], 'integer'],
             [['date', 'time'], 'safe'],
             [['partition_id'], 'string', 'max' => 255],
