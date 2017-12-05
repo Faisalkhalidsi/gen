@@ -7,10 +7,12 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Indihome Status Orders';
-$this->params['breadcrumbs'][] = $this->title;
+//$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="indihome-status-order-index">
     <h1><?= Html::encode($this->title) ?></h1>
+    <i>*Last Update <?php echo $last_update['date'] ." ".$last_update['time'];?></i>
+   <hr>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
@@ -21,8 +23,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'task',
             'queued',
             'status',
-            // 'date',
-            'time',
+//             'date',
+//            'time',
 //            ['class' => 'yii\grid\ActionColumn'],
         ],
     ]);
