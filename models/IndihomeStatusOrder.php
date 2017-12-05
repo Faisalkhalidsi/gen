@@ -50,7 +50,7 @@ class IndihomeStatusOrder extends \yii\db\ActiveRecord
             'queued' => 'Queued',
             'status' => 'Status',
             'date' => 'Date',
-            'time' => 'Time',
+            'time' => 'Last Update',
         ];
     }
 }
