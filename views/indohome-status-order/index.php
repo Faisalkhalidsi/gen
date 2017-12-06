@@ -11,8 +11,8 @@ $this->title = 'Indihome Status Orders';
 ?>
 <div class="indihome-status-order-index">
     <h1><?= Html::encode($this->title) ?></h1>
-    <i>*Last Update <?php echo $last_update['date'] ." ".$last_update['time'];?></i>
-   <hr>
+    <i>*Last Update <?php echo $last_update['date'] . " " . $last_update['time']; ?></i>
+    <hr>
     <?=
     GridView::widget([
         'dataProvider' => $dataProvider,
